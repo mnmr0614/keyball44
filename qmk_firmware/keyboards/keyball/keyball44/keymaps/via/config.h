@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DYNAMIC_KEYMAP_LAYER_COUNT 6  // レイヤー数
 
 #define COMBO_ONLY_FROM_LAYER 0  // コンボキーのレイヤー固定化
-#define COMBO_TERM 80  // コンボ判定時間 (default: 50)
+#define COMBO_TERM 40  // コンボ判定時間 (default: 50)
 
 #define OLED_TIMEOUT 30000  // OLED自動消灯時間（ms）
 #define TAPPING_TERM 180  // キー長押し時間（ms）
