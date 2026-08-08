@@ -69,3 +69,31 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_layerinfo();
 }
 #endif
+
+#ifdef COMBO_ENABLE
+enum combos {
+    CMB_LCLICK,   // J+K -> 左クリック
+    CMB_RCLICK,   // K+L -> 右クリック
+    CMB_MCLICK,   // M+, -> 中クリック
+    CMB_SCRL,     // ,+. -> 押下中スクロール
+    CMB_BACK,     // U+I -> 戻る
+    CMB_FWD,      // I+O -> 進む
+};
+
+const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM cmb_mclick[] = {KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM cmb_scrl[]   = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
+const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
+
+combo_t key_combos[] = {
+    [CMB_LCLICK] = COMBO(cmb_lclick, KC_BTN1),
+    [CMB_RCLICK] = COMBO(cmb_rclick, KC_BTN2),
+    [CMB_MCLICK] = COMBO(cmb_mclick, KC_BTN3),
+    [CMB_SCRL]   = COMBO(cmb_scrl,   SCRL_MO),
+    [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
+    [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
+};
+#endif
+
