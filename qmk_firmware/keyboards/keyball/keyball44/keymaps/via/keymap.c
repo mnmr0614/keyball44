@@ -96,4 +96,3 @@ combo_t key_combos[] = {
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
 };
 #endif
-
