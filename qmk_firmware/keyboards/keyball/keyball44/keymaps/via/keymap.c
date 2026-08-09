@@ -78,13 +78,13 @@ enum combos {
     CMB_SCRL,     // L+; -> 押下中スクロール
     CMB_BACK,     // U+I -> 戻る
     CMB_FWD,      // I+O -> 進む
- 
+
     // 括弧ペア入力＋1文字戻る
-    CMB_PAIR_PAREN,   // T+Y -> () 内側へ
-    CMB_PAIR_BRACE,   // G+H -> {} 内側へ
+    CMB_PAIR_BRACE,   // T+Y -> {} 内側へ
+    CMB_PAIR_PAREN,   // G+H -> () 内側へ
     CMB_PAIR_BRACKET, // B+N -> [] 内側へ
 };
- 
+
 // ---- キー組み合わせ ----
 const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
@@ -92,11 +92,11 @@ const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_scrl[]   = {KC_L, KC_SCLN, COMBO_END};  // L + ;
 const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
- 
-const uint16_t PROGMEM cmb_pair_paren[]   = {KC_T, KC_Y, COMBO_END};
-const uint16_t PROGMEM cmb_pair_brace[]   = {KC_G, KC_H, COMBO_END};
+
+const uint16_t PROGMEM cmb_pair_brace[]   = {KC_T, KC_Y, COMBO_END};
+const uint16_t PROGMEM cmb_pair_paren[]   = {KC_G, KC_H, COMBO_END};
 const uint16_t PROGMEM cmb_pair_bracket[] = {KC_B, KC_N, COMBO_END};
- 
+
 // ---- コンボ本体 ----
 combo_t key_combos[] = {
     [CMB_LCLICK] = COMBO(cmb_lclick, KC_BTN1),
@@ -105,30 +105,29 @@ combo_t key_combos[] = {
     [CMB_SCRL]   = COMBO(cmb_scrl,   SCRL_MO),
     [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
- 
-    [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
+
     [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
+    [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
 };
- 
+
 // ===================================================================
-// JIS配列でのキー対応（物理キーコードで指定）
+// JIS配列のキー対応（US配列とは [ ] の位置が1つずれる）
 //   (  = Shift + X_8
 //   )  = Shift + X_9
 //   {  = Shift + X_RBRC
 //   }  = Shift + X_BSLS
 //   [  = X_RBRC
 //   ]  = X_BSLS
-// SS_LSFT(...) で Shift を適用。SS_TAP(X_LEFT) で1文字戻る。
 // ===================================================================
 void process_combo_event(uint16_t combo_index, bool pressed) {
     if (!pressed) return;
     switch (combo_index) {
-        case CMB_PAIR_PAREN:   // ()
-            SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
-            break;
         case CMB_PAIR_BRACE:   // {}
             SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)) SS_LSFT(SS_TAP(X_BSLS)) SS_TAP(X_LEFT));
+            break;
+        case CMB_PAIR_PAREN:   // ()
+            SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
             break;
         case CMB_PAIR_BRACKET: // []
             SEND_STRING(SS_TAP(X_RBRC) SS_TAP(X_BSLS) SS_TAP(X_LEFT));
