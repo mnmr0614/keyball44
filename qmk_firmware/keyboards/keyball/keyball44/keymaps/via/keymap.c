@@ -115,7 +115,6 @@ const uint16_t PROGMEM cmb_pair_brace[]   = {KC_G, KC_H, COMBO_END};
 const uint16_t PROGMEM cmb_pair_bracket[] = {KC_B, KC_N, COMBO_END};
  
 combo_t key_combos[] = {
-    // マウス操作
     [CMB_LCLICK] = COMBO(cmb_lclick, KC_BTN1),
     [CMB_RCLICK] = COMBO(cmb_rclick, KC_BTN2),
     [CMB_MCLICK] = COMBO(cmb_mclick, KC_BTN3),
@@ -123,34 +122,63 @@ combo_t key_combos[] = {
     [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
  
-    // 開き括弧
-    [CMB_LPAREN]   = COMBO(cmb_lparen,   KC_LPRN),  // (
-    [CMB_LBRACE]   = COMBO(cmb_lbrace,   KC_LCBR),  // {
-    [CMB_LBRACKET] = COMBO(cmb_lbracket, KC_LBRC),  // [
+    [CMB_LPAREN]   = COMBO(cmb_lparen,   KC_NO),
+    [CMB_LBRACE]   = COMBO(cmb_lbrace,   KC_NO),
+    [CMB_LBRACKET] = COMBO(cmb_lbracket, KC_NO),
  
-    // 閉じ括弧
-    [CMB_RPAREN]   = COMBO(cmb_rparen,   KC_RPRN),  // )
-    [CMB_RBRACE]   = COMBO(cmb_rbrace,   KC_RCBR),  // }
-    [CMB_RBRACKET] = COMBO(cmb_rbracket, KC_RBRC),  // ]
+    [CMB_RPAREN]   = COMBO(cmb_rparen,   KC_NO),
+    [CMB_RBRACE]   = COMBO(cmb_rbrace,   KC_NO),
+    [CMB_RBRACKET] = COMBO(cmb_rbracket, KC_NO),
  
-    // 括弧ペア入力（process_combo_event で処理するため KC_NO）
     [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
     [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
 };
  
-// ---- ペア入力の実処理（() を入力して1文字戻る）----
+// ===================================================================
+// JIS配列でのキー対応（物理キーコードで指定）
+//   (  = Shift + KC_8
+//   )  = Shift + KC_9
+//   {  = Shift + KC_LBRC   （JISの[ キー）
+//   }  = Shift + KC_RBRC   （JISの] キー）
+//   [  = KC_LBRC           （Shiftなし）
+//   ]  = KC_RBRC           （Shiftなし）
+// SS_LSFT(...) で Shift を掛ける。SS_TAP(X_LEFT) で1文字戻る。
+// ===================================================================
 void process_combo_event(uint16_t combo_index, bool pressed) {
     if (!pressed) return;
     switch (combo_index) {
-        case CMB_PAIR_PAREN:
-            SEND_STRING("()" SS_TAP(X_LEFT));
+        // --- 開き括弧 ---
+        case CMB_LPAREN:   // (
+            SEND_STRING(SS_LSFT(SS_TAP(X_8)));
             break;
-        case CMB_PAIR_BRACE:
-            SEND_STRING("{}" SS_TAP(X_LEFT));
+        case CMB_LBRACE:   // {
+            SEND_STRING(SS_LSFT(SS_TAP(X_LBRC)));
             break;
-        case CMB_PAIR_BRACKET:
-            SEND_STRING("[]" SS_TAP(X_LEFT));
+        case CMB_LBRACKET: // [
+            SEND_STRING(SS_TAP(X_LBRC));
+            break;
+ 
+        // --- 閉じ括弧 ---
+        case CMB_RPAREN:   // )
+            SEND_STRING(SS_LSFT(SS_TAP(X_9)));
+            break;
+        case CMB_RBRACE:   // }
+            SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)));
+            break;
+        case CMB_RBRACKET: // ]
+            SEND_STRING(SS_TAP(X_RBRC));
+            break;
+ 
+        // --- ペア入力＋1文字戻る ---
+        case CMB_PAIR_PAREN:   // ()
+            SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
+            break;
+        case CMB_PAIR_BRACE:   // {}
+            SEND_STRING(SS_LSFT(SS_TAP(X_LBRC)) SS_LSFT(SS_TAP(X_RBRC)) SS_TAP(X_LEFT));
+            break;
+        case CMB_PAIR_BRACKET: // []
+            SEND_STRING(SS_TAP(X_LBRC) SS_TAP(X_RBRC) SS_TAP(X_LEFT));
             break;
     }
 }
