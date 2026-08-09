@@ -75,7 +75,7 @@ enum combos {
     CMB_LCLICK,   // J+K -> 左クリック
     CMB_RCLICK,   // K+L -> 右クリック
     CMB_MCLICK,   // J+L -> 中クリック
-    CMB_SCRL,     // L+; -> 押下中スクロール
+    CMB_SCRL,     // L+- -> 押下中スクロール
     CMB_BACK,     // U+I -> 戻る
     CMB_FWD,      // I+O -> 進む
 
@@ -89,7 +89,7 @@ enum combos {
 const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
-const uint16_t PROGMEM cmb_scrl[]   = {KC_L, KC_SCLN, COMBO_END};  // L + ;
+const uint16_t PROGMEM cmb_scrl[]   = {KC_L, KC_MINS, COMBO_END};  // L + -
 const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
 
