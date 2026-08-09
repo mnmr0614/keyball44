@@ -74,46 +74,30 @@ enum combos {
     // マウス操作
     CMB_LCLICK,   // J+K -> 左クリック
     CMB_RCLICK,   // K+L -> 右クリック
-    CMB_MCLICK,   // M+, -> 中クリック
-    CMB_SCRL,     // ,+. -> 押下中スクロール
+    CMB_MCLICK,   // J+L -> 中クリック
+    CMB_SCRL,     // L+; -> 押下中スクロール
     CMB_BACK,     // U+I -> 戻る
     CMB_FWD,      // I+O -> 進む
  
-    // 開き括弧
-    CMB_LPAREN,   // R+T -> (
-    CMB_LBRACE,   // F+G -> {
-    CMB_LBRACKET, // V+B -> [
- 
-    // 閉じ括弧
-    CMB_RPAREN,   // Y+U -> )
-    CMB_RBRACE,   // H+J -> }
-    CMB_RBRACKET, // N+M -> ]
- 
-    // 括弧ペア＋1文字戻る
+    // 括弧ペア入力＋1文字戻る
     CMB_PAIR_PAREN,   // T+Y -> () 内側へ
     CMB_PAIR_BRACE,   // G+H -> {} 内側へ
     CMB_PAIR_BRACKET, // B+N -> [] 内側へ
 };
  
+// ---- キー組み合わせ ----
 const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
-const uint16_t PROGMEM cmb_mclick[] = {KC_M, KC_COMM, COMBO_END};
-const uint16_t PROGMEM cmb_scrl[]   = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
+const uint16_t PROGMEM cmb_scrl[]   = {KC_L, KC_SCLN, COMBO_END};  // L + ;
 const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
- 
-const uint16_t PROGMEM cmb_lparen[]   = {KC_R, KC_T, COMBO_END};
-const uint16_t PROGMEM cmb_lbrace[]   = {KC_F, KC_G, COMBO_END};
-const uint16_t PROGMEM cmb_lbracket[] = {KC_V, KC_B, COMBO_END};
- 
-const uint16_t PROGMEM cmb_rparen[]   = {KC_Y, KC_U, COMBO_END};
-const uint16_t PROGMEM cmb_rbrace[]   = {KC_H, KC_J, COMBO_END};
-const uint16_t PROGMEM cmb_rbracket[] = {KC_N, KC_M, COMBO_END};
  
 const uint16_t PROGMEM cmb_pair_paren[]   = {KC_T, KC_Y, COMBO_END};
 const uint16_t PROGMEM cmb_pair_brace[]   = {KC_G, KC_H, COMBO_END};
 const uint16_t PROGMEM cmb_pair_bracket[] = {KC_B, KC_N, COMBO_END};
  
+// ---- コンボ本体 ----
 combo_t key_combos[] = {
     [CMB_LCLICK] = COMBO(cmb_lclick, KC_BTN1),
     [CMB_RCLICK] = COMBO(cmb_rclick, KC_BTN2),
@@ -121,14 +105,6 @@ combo_t key_combos[] = {
     [CMB_SCRL]   = COMBO(cmb_scrl,   SCRL_MO),
     [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
- 
-    [CMB_LPAREN]   = COMBO(cmb_lparen,   KC_NO),
-    [CMB_LBRACE]   = COMBO(cmb_lbrace,   KC_NO),
-    [CMB_LBRACKET] = COMBO(cmb_lbracket, KC_NO),
- 
-    [CMB_RPAREN]   = COMBO(cmb_rparen,   KC_NO),
-    [CMB_RBRACE]   = COMBO(cmb_rbrace,   KC_NO),
-    [CMB_RBRACKET] = COMBO(cmb_rbracket, KC_NO),
  
     [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
@@ -148,29 +124,6 @@ combo_t key_combos[] = {
 void process_combo_event(uint16_t combo_index, bool pressed) {
     if (!pressed) return;
     switch (combo_index) {
-        // --- 開き括弧 ---
-        case CMB_LPAREN:   // (
-            SEND_STRING(SS_LSFT(SS_TAP(X_8)));
-            break;
-        case CMB_LBRACE:   // {
-            SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)));
-            break;
-        case CMB_LBRACKET: // [
-            SEND_STRING(SS_TAP(X_RBRC));
-            break;
-
-        // --- 閉じ括弧 ---
-        case CMB_RPAREN:   // )
-            SEND_STRING(SS_LSFT(SS_TAP(X_9)));
-            break;
-        case CMB_RBRACE:   // }
-            SEND_STRING(SS_LSFT(SS_TAP(X_BSLS)));
-            break;
-        case CMB_RBRACKET: // ]
-            SEND_STRING(SS_TAP(X_BSLS));
-            break;
-
-        // --- ペア入力＋1文字戻る ---
         case CMB_PAIR_PAREN:   // ()
             SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
             break;
