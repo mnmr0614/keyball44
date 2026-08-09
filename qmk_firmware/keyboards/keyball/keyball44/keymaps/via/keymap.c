@@ -137,13 +137,13 @@ combo_t key_combos[] = {
  
 // ===================================================================
 // JIS配列でのキー対応（物理キーコードで指定）
-//   (  = Shift + KC_8
-//   )  = Shift + KC_9
-//   {  = Shift + KC_LBRC   （JISの[ キー）
-//   }  = Shift + KC_RBRC   （JISの] キー）
-//   [  = KC_LBRC           （Shiftなし）
-//   ]  = KC_RBRC           （Shiftなし）
-// SS_LSFT(...) で Shift を掛ける。SS_TAP(X_LEFT) で1文字戻る。
+//   (  = Shift + X_8
+//   )  = Shift + X_9
+//   {  = Shift + X_RBRC
+//   }  = Shift + X_BSLS
+//   [  = X_RBRC
+//   ]  = X_BSLS
+// SS_LSFT(...) で Shift を適用。SS_TAP(X_LEFT) で1文字戻る。
 // ===================================================================
 void process_combo_event(uint16_t combo_index, bool pressed) {
     if (!pressed) return;
@@ -153,32 +153,32 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             SEND_STRING(SS_LSFT(SS_TAP(X_8)));
             break;
         case CMB_LBRACE:   // {
-            SEND_STRING(SS_LSFT(SS_TAP(X_LBRC)));
+            SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)));
             break;
         case CMB_LBRACKET: // [
-            SEND_STRING(SS_TAP(X_LBRC));
+            SEND_STRING(SS_TAP(X_RBRC));
             break;
- 
+
         // --- 閉じ括弧 ---
         case CMB_RPAREN:   // )
             SEND_STRING(SS_LSFT(SS_TAP(X_9)));
             break;
         case CMB_RBRACE:   // }
-            SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)));
+            SEND_STRING(SS_LSFT(SS_TAP(X_BSLS)));
             break;
         case CMB_RBRACKET: // ]
-            SEND_STRING(SS_TAP(X_RBRC));
+            SEND_STRING(SS_TAP(X_BSLS));
             break;
- 
+
         // --- ペア入力＋1文字戻る ---
         case CMB_PAIR_PAREN:   // ()
             SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
             break;
         case CMB_PAIR_BRACE:   // {}
-            SEND_STRING(SS_LSFT(SS_TAP(X_LBRC)) SS_LSFT(SS_TAP(X_RBRC)) SS_TAP(X_LEFT));
+            SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)) SS_LSFT(SS_TAP(X_BSLS)) SS_TAP(X_LEFT));
             break;
         case CMB_PAIR_BRACKET: // []
-            SEND_STRING(SS_TAP(X_LBRC) SS_TAP(X_RBRC) SS_TAP(X_LEFT));
+            SEND_STRING(SS_TAP(X_RBRC) SS_TAP(X_BSLS) SS_TAP(X_LEFT));
             break;
     }
 }
