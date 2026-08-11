@@ -93,9 +93,9 @@ const uint16_t PROGMEM cmb_scrl[]   = {KC_L, KC_MINS, COMBO_END};  // L + -
 const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
 
-const uint16_t PROGMEM cmb_pair_brace[]   = {KC_T, KC_Y, COMBO_END};
-const uint16_t PROGMEM cmb_pair_paren[]   = {KC_G, KC_H, COMBO_END};
-const uint16_t PROGMEM cmb_pair_bracket[] = {KC_B, KC_N, COMBO_END};
+const uint16_t PROGMEM cmb_pair_brace[]   = {KC_R, KC_T, COMBO_END};
+const uint16_t PROGMEM cmb_pair_paren[]   = {KC_F, KC_G, COMBO_END};
+const uint16_t PROGMEM cmb_pair_bracket[] = {KC_V, KC_B, COMBO_END};
 
 // ---- コンボ本体 ----
 combo_t key_combos[] = {
