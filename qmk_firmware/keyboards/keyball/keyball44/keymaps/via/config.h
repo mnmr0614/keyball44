@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define COMBO_ONLY_FROM_LAYER 0  // コンボキーのレイヤー固定化
 #define COMBO_TERM 50  // コンボ判定時間 (default: 50)
 
-#define TAPPING_TERM 170  // タップ／ホールド判定時間 (default: 200)
+#define TAPPING_TERM 200  // タップ／ホールド判定時間 (default: 200)
 #define PERMISSIVE_HOLD  // 他キーが押されて離されたときにホールド確定
 
 #define OLED_TIMEOUT 30000  // OLED自動消灯時間（ms）
