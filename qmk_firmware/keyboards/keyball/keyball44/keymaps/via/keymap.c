@@ -75,21 +75,23 @@ enum combos {
     CMB_LCLICK,   // J+K -> 左クリック
     CMB_RCLICK,   // K+L -> 右クリック
     CMB_MCLICK,   // J+L -> 中クリック
-    CMB_SCRL,     // L+- -> 押下中スクロール
+    CMB_SCRL_H,   // M+, -> 押下中スクロール（横）
+    CMB_SCRL_V,   // ,+. -> 押下中スクロール（縦）
     CMB_BACK,     // U+I -> 戻る
     CMB_FWD,      // I+O -> 進む
 
     // 括弧ペア入力＋1文字戻る
-    CMB_PAIR_BRACE,   // T+Y -> {} 内側へ
-    CMB_PAIR_PAREN,   // G+H -> () 内側へ
-    CMB_PAIR_BRACKET, // B+N -> [] 内側へ
+    CMB_PAIR_BRACE,   // R+T -> {} 内側へ
+    CMB_PAIR_PAREN,   // F+G -> () 内側へ
+    CMB_PAIR_BRACKET, // V+B -> [] 内側へ
 };
 
 // ---- キー組み合わせ ----
 const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
-const uint16_t PROGMEM cmb_scrl[]   = {KC_L, KC_MINS, COMBO_END};  // L + -
+const uint16_t PROGMEM cmb_scrl_h[] = {KC_M,    KC_COMM, COMBO_END};  // M + ,
+const uint16_t PROGMEM cmb_scrl_v[] = {KC_COMM, KC_DOT,  COMBO_END};  // , + .
 const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
 
@@ -102,7 +104,8 @@ combo_t key_combos[] = {
     [CMB_LCLICK] = COMBO(cmb_lclick, KC_BTN1),
     [CMB_RCLICK] = COMBO(cmb_rclick, KC_BTN2),
     [CMB_MCLICK] = COMBO(cmb_mclick, KC_BTN3),
-    [CMB_SCRL]   = COMBO(cmb_scrl,   SCRL_MO),
+    [CMB_SCRL_H] = COMBO_ACTION(cmb_scrl_h),
+    [CMB_SCRL_V] = COMBO_ACTION(cmb_scrl_v),
     [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
 
@@ -110,6 +113,16 @@ combo_t key_combos[] = {
     [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
 };
+
+// スクロール方向を指定してスクロールモードを切り替える
+static void scroll_with_snap(keyball_scrollsnap_mode_t snap, bool pressed) {
+    if (pressed) {
+        keyball_set_scrollsnap_mode(snap);
+        keyball_set_scroll_mode(true);
+    } else {
+        keyball_set_scroll_mode(false);
+    }
+}
 
 // ===================================================================
 // JIS配列のキー対応（US配列とは [ ] の位置が1つずれる）
@@ -121,6 +134,17 @@ combo_t key_combos[] = {
 //   ]  = X_BSLS
 // ===================================================================
 void process_combo_event(uint16_t combo_index, bool pressed) {
+    // 押下・離上の両方を扱うもの
+    switch (combo_index) {
+        case CMB_SCRL_H:   // 横スクロール
+            scroll_with_snap(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL, pressed);
+            return;
+        case CMB_SCRL_V:   // 縦スクロール
+            scroll_with_snap(KEYBALL_SCROLLSNAP_MODE_VERTICAL, pressed);
+            return;
+    }
+
+    // 以下は押下時のみ
     if (!pressed) return;
     switch (combo_index) {
         case CMB_PAIR_BRACE:   // {}
