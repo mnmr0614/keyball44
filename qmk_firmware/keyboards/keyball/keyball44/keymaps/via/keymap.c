@@ -77,13 +77,13 @@ enum combos {
     CMB_MCLICK,   // J+L -> 中クリック
     CMB_SCRL_H,   // M+, -> 押下中スクロール（横）
     CMB_SCRL_V,   // ,+. -> 押下中スクロール（縦）
-    CMB_BACK,     // U+I -> 戻る
-    CMB_FWD,      // I+O -> 進む
+    CMB_BACK,     // H+J -> 戻る
+    CMB_FWD,      // L+- -> 進む
 
     // 括弧ペア入力＋1文字戻る
-    CMB_PAIR_BRACE,   // R+T -> {} 内側へ
-    CMB_PAIR_PAREN,   // F+G -> () 内側へ
-    CMB_PAIR_BRACKET, // V+B -> [] 内側へ
+    CMB_PAIR_BRACKET,   // R+T -> [] 内側へ
+    CMB_PAIR_PAREN,     // F+G -> () 内側へ
+    CMB_PAIR_BRACE,     // V+B -> {} 内側へ
 };
 
 // ---- キー組み合わせ ----
@@ -92,12 +92,12 @@ const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_scrl_h[] = {KC_M,    KC_COMM, COMBO_END};  // M + ,
 const uint16_t PROGMEM cmb_scrl_v[] = {KC_COMM, KC_DOT,  COMBO_END};  // , + .
-const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
-const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM cmb_back[]   = {KC_H, KC_J, COMBO_END};
+const uint16_t PROGMEM cmb_fwd[]    = {KC_L, KC_MINS, COMBO_END};
 
-const uint16_t PROGMEM cmb_pair_brace[]   = {KC_R, KC_T, COMBO_END};
+const uint16_t PROGMEM cmb_pair_bracket[] = {KC_R, KC_T, COMBO_END};
 const uint16_t PROGMEM cmb_pair_paren[]   = {KC_F, KC_G, COMBO_END};
-const uint16_t PROGMEM cmb_pair_bracket[] = {KC_V, KC_B, COMBO_END};
+const uint16_t PROGMEM cmb_pair_brace[]   = {KC_V, KC_B, COMBO_END};
 
 // ---- コンボ本体 ----
 combo_t key_combos[] = {
@@ -109,9 +109,9 @@ combo_t key_combos[] = {
     [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
 
-    [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
-    [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
+    [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
+    [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
 };
 
 // スクロール方向を指定してスクロールモードを切り替える
