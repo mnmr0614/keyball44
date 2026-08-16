@@ -81,9 +81,13 @@ enum combos {
     CMB_FWD,      // L+- -> 進む
 
     // 括弧ペア入力＋1文字戻る
-    CMB_PAIR_BRACKET,   // R+T -> [] 内側へ
-    CMB_PAIR_PAREN,     // F+G -> () 内側へ
-    CMB_PAIR_BRACE,     // V+B -> {} 内側へ
+    CMB_PAIR_BRACKET,   // E+R -> [] 内側へ
+    CMB_PAIR_PAREN,     // D+F -> () 内側へ
+    CMB_PAIR_BRACE,     // C+V -> {} 内側へ
+
+    // IME切替
+    CMB_JP_OFF,   // F+左親指2 -> 英数
+    CMB_JP_ON,    // J+右親指2 -> かな
 };
 
 // ---- キー組み合わせ ----
@@ -95,9 +99,13 @@ const uint16_t PROGMEM cmb_scrl_v[] = {KC_COMM, KC_DOT,  COMBO_END};  // , + .
 const uint16_t PROGMEM cmb_back[]   = {KC_H, KC_J, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_L, KC_MINS, COMBO_END};
 
-const uint16_t PROGMEM cmb_pair_bracket[] = {KC_R, KC_T, COMBO_END};
-const uint16_t PROGMEM cmb_pair_paren[]   = {KC_F, KC_G, COMBO_END};
-const uint16_t PROGMEM cmb_pair_brace[]   = {KC_V, KC_B, COMBO_END};
+const uint16_t PROGMEM cmb_pair_bracket[] = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM cmb_pair_paren[]   = {KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM cmb_pair_brace[]   = {KC_C, KC_V, COMBO_END};
+
+// IME切替（親指キーは内側から2番目 = Space/LT(2), Enter/LT(3)）
+const uint16_t PROGMEM cmb_jp_off[] = {KC_F, LT(2, KC_SPC), COMBO_END};   // 英数
+const uint16_t PROGMEM cmb_jp_on[]  = {KC_J, LT(3, KC_ENT), COMBO_END};   // かな
 
 // ---- コンボ本体 ----
 combo_t key_combos[] = {
@@ -112,6 +120,9 @@ combo_t key_combos[] = {
     [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
     [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
+
+    [CMB_JP_OFF] = COMBO(cmb_jp_off, KC_LNG2),   // 英数
+    [CMB_JP_ON]  = COMBO(cmb_jp_on,  KC_LNG1),   // かな
 };
 
 // スクロール方向を指定してスクロールモードを切り替える
