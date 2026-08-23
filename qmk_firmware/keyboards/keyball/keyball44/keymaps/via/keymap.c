@@ -75,15 +75,15 @@ enum combos {
     CMB_LCLICK,   // J+K -> 左クリック
     CMB_RCLICK,   // K+L -> 右クリック
     CMB_MCLICK,   // J+L -> 中クリック
-    CMB_SCRL_H,   // M+, -> 押下中スクロール（横）
-    CMB_SCRL_V,   // ,+. -> 押下中スクロール（縦）
-    CMB_BACK,     // H+J -> 戻る
-    CMB_FWD,      // L+- -> 進む
+    CMB_SCRL_V,   // M+, -> 押下中スクロール（縦）
+    CMB_SCRL_H,   // ,+. -> 押下中スクロール（横）
+    CMB_BACK,     // U+I -> 戻る
+    CMB_FWD,      // I+O -> 進む
 
-    // 括弧ペア入力＋1文字戻る
-    CMB_PAIR_BRACKET,   // E+R -> [] 内側へ
-    CMB_PAIR_PAREN,     // D+F -> () 内側へ
-    CMB_PAIR_BRACE,     // C+V -> {} 内側へ
+    // 括弧ペア入力＋1文字戻る（一時的に無効化）
+    // CMB_PAIR_BRACKET,   // E+R -> [] 内側へ
+    // CMB_PAIR_PAREN,     // D+F -> () 内側へ
+    // CMB_PAIR_BRACE,     // C+V -> {} 内側へ
 
     // IME切替
     CMB_JP_OFF,   // F+左親指2 -> 英数
@@ -94,14 +94,15 @@ enum combos {
 const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
-const uint16_t PROGMEM cmb_scrl_h[] = {KC_M,    KC_COMM, COMBO_END};  // M + ,
-const uint16_t PROGMEM cmb_scrl_v[] = {KC_COMM, KC_DOT,  COMBO_END};  // , + .
-const uint16_t PROGMEM cmb_back[]   = {KC_H, KC_J, COMBO_END};
-const uint16_t PROGMEM cmb_fwd[]    = {KC_L, KC_MINS, COMBO_END};
+const uint16_t PROGMEM cmb_scrl_v[] = {KC_M, MT(MOD_RALT, KC_COMM), COMBO_END};                 // M + ,
+const uint16_t PROGMEM cmb_scrl_h[] = {MT(MOD_RALT, KC_COMM), MT(MOD_RGUI, KC_DOT), COMBO_END}; // , + .
+const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
+const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
 
-const uint16_t PROGMEM cmb_pair_bracket[] = {KC_E, KC_R, COMBO_END};
-const uint16_t PROGMEM cmb_pair_paren[]   = {KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM cmb_pair_brace[]   = {KC_C, KC_V, COMBO_END};
+// 括弧ペア（一時的に無効化）
+// const uint16_t PROGMEM cmb_pair_bracket[] = {KC_E, KC_R, COMBO_END};
+// const uint16_t PROGMEM cmb_pair_paren[]   = {KC_D, KC_F, COMBO_END};
+// const uint16_t PROGMEM cmb_pair_brace[]   = {KC_C, KC_V, COMBO_END};
 
 // IME切替（親指キーは内側から2番目 = Space/LT(2), Enter/LT(3)）
 const uint16_t PROGMEM cmb_jp_off[] = {KC_F, LT(2, KC_SPC), COMBO_END};   // 英数
@@ -112,14 +113,15 @@ combo_t key_combos[] = {
     [CMB_LCLICK] = COMBO(cmb_lclick, KC_BTN1),
     [CMB_RCLICK] = COMBO(cmb_rclick, KC_BTN2),
     [CMB_MCLICK] = COMBO(cmb_mclick, KC_BTN3),
-    [CMB_SCRL_H] = COMBO_ACTION(cmb_scrl_h),
     [CMB_SCRL_V] = COMBO_ACTION(cmb_scrl_v),
+    [CMB_SCRL_H] = COMBO_ACTION(cmb_scrl_h),
     [CMB_BACK]   = COMBO(cmb_back,   KC_BTN4),
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
 
-    [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
-    [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
-    [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
+    // 括弧ペア（一時的に無効化）
+    // [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
+    // [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
+    // [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
 
     [CMB_JP_OFF] = COMBO(cmb_jp_off, KC_LNG2),   // 英数
     [CMB_JP_ON]  = COMBO(cmb_jp_on,  KC_LNG1),   // かな
@@ -147,26 +149,26 @@ static void scroll_with_snap(keyball_scrollsnap_mode_t snap, bool pressed) {
 void process_combo_event(uint16_t combo_index, bool pressed) {
     // 押下・離上の両方を扱うもの
     switch (combo_index) {
-        case CMB_SCRL_H:   // 横スクロール
-            scroll_with_snap(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL, pressed);
-            return;
         case CMB_SCRL_V:   // 縦スクロール
             scroll_with_snap(KEYBALL_SCROLLSNAP_MODE_VERTICAL, pressed);
             return;
+        case CMB_SCRL_H:   // 横スクロール
+            scroll_with_snap(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL, pressed);
+            return;
     }
 
-    // 以下は押下時のみ
-    if (!pressed) return;
-    switch (combo_index) {
-        case CMB_PAIR_BRACE:   // {}
-            SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)) SS_LSFT(SS_TAP(X_BSLS)) SS_TAP(X_LEFT));
-            break;
-        case CMB_PAIR_PAREN:   // ()
-            SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
-            break;
-        case CMB_PAIR_BRACKET: // []
-            SEND_STRING(SS_TAP(X_RBRC) SS_TAP(X_BSLS) SS_TAP(X_LEFT));
-            break;
-    }
+    // 括弧ペア（一時的に無効化）
+    // if (!pressed) return;
+    // switch (combo_index) {
+    //     case CMB_PAIR_BRACE:   // {}
+    //         SEND_STRING(SS_LSFT(SS_TAP(X_RBRC)) SS_LSFT(SS_TAP(X_BSLS)) SS_TAP(X_LEFT));
+    //         break;
+    //     case CMB_PAIR_PAREN:   // ()
+    //         SEND_STRING(SS_LSFT(SS_TAP(X_8)) SS_LSFT(SS_TAP(X_9)) SS_TAP(X_LEFT));
+    //         break;
+    //     case CMB_PAIR_BRACKET: // []
+    //         SEND_STRING(SS_TAP(X_RBRC) SS_TAP(X_BSLS) SS_TAP(X_LEFT));
+    //         break;
+    // }
 }
 #endif
