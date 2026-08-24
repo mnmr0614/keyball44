@@ -94,8 +94,8 @@ enum combos {
 const uint16_t PROGMEM cmb_lclick[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM cmb_rclick[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM cmb_mclick[] = {KC_J, KC_L, COMBO_END};
-const uint16_t PROGMEM cmb_scrl_v[] = {KC_M, MT(MOD_RALT, KC_COMM), COMBO_END};                 // M + ,
-const uint16_t PROGMEM cmb_scrl_h[] = {MT(MOD_RALT, KC_COMM), MT(MOD_RGUI, KC_DOT), COMBO_END}; // , + .
+const uint16_t PROGMEM cmb_scrl_v[] = {KC_M, MT(MOD_RSHIFT, KC_COMM), COMBO_END};                 // M + ,
+const uint16_t PROGMEM cmb_scrl_h[] = {MT(MOD_RSHIFT, KC_COMM), MT(MOD_RALT, KC_DOT), COMBO_END}; // , + .
 const uint16_t PROGMEM cmb_back[]   = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
 
@@ -123,7 +123,7 @@ combo_t key_combos[] = {
     // [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     // [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
 
-    [CMB_JP_OFF] = COMBO(cmb_jp_off, KC_LNG2),   // 英数
+    [CMB_JP_OFF] = COMBO(cmb_jp_off, LT(MOD_LSHIFT, KC_LNG2)),   // 英数
     [CMB_JP_ON]  = COMBO(cmb_jp_on,  KC_LNG1),   // かな
 };
 
