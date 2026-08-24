@@ -105,7 +105,7 @@ const uint16_t PROGMEM cmb_fwd[]    = {KC_I, KC_O, COMBO_END};
 // const uint16_t PROGMEM cmb_pair_brace[]   = {KC_C, KC_V, COMBO_END};
 
 // IME切替（親指キーは内側から2番目 = Space/LT(2), Enter/LT(3)）
-const uint16_t PROGMEM cmb_jp_off[] = {KC_F, LT(2, KC_SPC), COMBO_END};   // 英数
+const uint16_t PROGMEM cmb_jp_off[] = {KC_F, MT(MOD_LSHIFT, KC_SPC), COMBO_END};   // 英数
 const uint16_t PROGMEM cmb_jp_on[]  = {KC_J, LT(3, KC_ENT), COMBO_END};   // かな
 
 // ---- コンボ本体 ----
@@ -119,11 +119,11 @@ combo_t key_combos[] = {
     [CMB_FWD]    = COMBO(cmb_fwd,    KC_BTN5),
 
     // 括弧ペア（一時的に無効化）
-    // [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),
+    // [CMB_PAIR_BRACKET] = COMBO(cmb_pair_bracket, KC_NO),m
     // [CMB_PAIR_PAREN]   = COMBO(cmb_pair_paren,   KC_NO),
     // [CMB_PAIR_BRACE]   = COMBO(cmb_pair_brace,   KC_NO),
 
-    [CMB_JP_OFF] = COMBO(cmb_jp_off, LT(MOD_LSHIFT, KC_LNG2)),   // 英数
+    [CMB_JP_OFF] = COMBO(cmb_jp_off, KC_LNG2),   // 英数
     [CMB_JP_ON]  = COMBO(cmb_jp_on,  KC_LNG1),   // かな
 };
 
